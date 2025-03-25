@@ -27,13 +27,15 @@ Project File Date:  09/10/2025
 <h2>Output:</h2>
 *** Using Compiler 'V6.22', folder: 'C:\Users\haque\AppData\Local\Keil_v5\ARM\ARMCLANG\Bin'
 Rebuild target 'Target_1'
-compiling SysTick.c...
-compiling PLL.c...
 onboardLEDs.c(69): warning: unused parameter 'count' [-Wunused-parameter]
    69 | void FlashI2CError(int count) {
       |                        ^
 1 warning generated.
 compiling onboardLEDs.c...
+compiling SysTick.c...
+compiling SpatialScanner.c...
+compiling PLL.c...
+compiling uart.c...
 vl53l1_platform_2dx4.c(159): warning: comparison of integers of different signs: 'int' and 'uint32_t' (aka 'unsigned int') [-Wsign-compare]
   159 |         for(int i = 0; i < count-1; i++){ 
       |                        ~ ^ ~~~~~~~
@@ -51,8 +53,6 @@ vl53l1_platform_2dx4.c(430): warning: comparison of integers of different signs:
       |            ~^~~~~~~~
 5 warnings generated.
 compiling vl53l1_platform_2dx4.c...
-compiling uart.c...
-compiling SpatialScanner.c...
 VL53L1X_api.c(271): warning: unused variable 'tmp' [-Wunused-variable]
   271 |         uint8_t tmp;
       |                 ^~~
@@ -61,11 +61,8 @@ compiling VL53L1X_api.c...
 assembling startup_msp432e401y_uvision.s...
 compiling system_msp432e401y.c...
 linking...
-.\Objects\Spatial Scanner.axf: Error: L6218E: Undefined symbol main (referred from __rtentry2.o).
-Not enough information to list image symbols.
-Not enough information to list load addresses in the image map.
-Finished: 2 information, 0 warning and 1 error messages.
-".\Objects\Spatial Scanner.axf" - 1 Error(s), 7 Warning(s).
+Program Size: Code=1092 RO-data=540 RW-data=4 ZI-data=608  
+".\Objects\Spatial Scanner.axf" - 0 Error(s), 7 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -95,7 +92,6 @@ Package Vendor: TexasInstruments
       Source file:   Examples/BlinkLED/blinkLED.c
       Source file:   Examples/EmptyMain/main.c
       Source file:   Device/Source/startup_msp432e401y_uvision.s
-Target not created.
 Build Time Elapsed:  00:00:01
 </pre>
 </body>
