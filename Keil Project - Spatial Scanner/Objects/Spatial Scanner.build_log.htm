@@ -27,13 +27,13 @@ Project File Date:  09/10/2025
 <h2>Output:</h2>
 *** Using Compiler 'V6.22', folder: 'C:\Users\haque\AppData\Local\Keil_v5\ARM\ARMCLANG\Bin'
 Rebuild target 'Target_1'
+compiling SysTick.c...
+compiling PLL.c...
 onboardLEDs.c(69): warning: unused parameter 'count' [-Wunused-parameter]
    69 | void FlashI2CError(int count) {
       |                        ^
 1 warning generated.
 compiling onboardLEDs.c...
-compiling PLL.c...
-compiling SysTick.c...
 vl53l1_platform_2dx4.c(159): warning: comparison of integers of different signs: 'int' and 'uint32_t' (aka 'unsigned int') [-Wsign-compare]
   159 |         for(int i = 0; i < count-1; i++){ 
       |                        ~ ^ ~~~~~~~
@@ -51,8 +51,8 @@ vl53l1_platform_2dx4.c(430): warning: comparison of integers of different signs:
       |            ~^~~~~~~~
 5 warnings generated.
 compiling vl53l1_platform_2dx4.c...
-compiling SpatialScanner.c...
 compiling uart.c...
+compiling SpatialScanner.c...
 VL53L1X_api.c(271): warning: unused variable 'tmp' [-Wunused-variable]
   271 |         uint8_t tmp;
       |                 ^~~
@@ -96,7 +96,7 @@ Package Vendor: TexasInstruments
       Source file:   Examples/EmptyMain/main.c
       Source file:   Device/Source/startup_msp432e401y_uvision.s
 Target not created.
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>
