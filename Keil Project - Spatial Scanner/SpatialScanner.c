@@ -1,7 +1,6 @@
-//Project 2 Deliverable
 //Amaiam Ul Haque
-//March 31, 2025 - April 1, 2025
-
+//March 31, 2025
+//Spatial Scanner - main file
 
 
 //HEADER FILES --------------------------------------------------------------------------------------------------------
