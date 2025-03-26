@@ -209,6 +209,8 @@ Section Cross References
     vl53l1x_api.o(.text.VL53L1X_StartTemperatureUpdate) refers to vl53l1x_api.o(.text.VL53L1X_ClearInterrupt) for VL53L1X_ClearInterrupt
     vl53l1x_api.o(.text.VL53L1X_StartTemperatureUpdate) refers to vl53l1x_api.o(.text.VL53L1X_StopRanging) for VL53L1X_StopRanging
     vl53l1x_api.o(.ARM.exidx.text.VL53L1X_StartTemperatureUpdate) refers to vl53l1x_api.o(.text.VL53L1X_StartTemperatureUpdate) for [Anonymous Symbol]
+    spatialscanner.o(.ARM.exidx.text.PortN_Init) refers to spatialscanner.o(.text.PortN_Init) for [Anonymous Symbol]
+    spatialscanner.o(.ARM.exidx.text.PortF_Init) refers to spatialscanner.o(.text.PortF_Init) for [Anonymous Symbol]
     systick.o(.ARM.exidx.text.SysTick_Init) refers to systick.o(.text.SysTick_Init) for [Anonymous Symbol]
     systick.o(.ARM.exidx.text.SysTick_Wait) refers to systick.o(.text.SysTick_Wait) for [Anonymous Symbol]
     systick.o(.text.SysTick_Wait10ms) refers to systick.o(.text.SysTick_Wait) for SysTick_Wait
@@ -722,6 +724,10 @@ Removing Unused input sections from the image.
     Removing vl53l1x_api.o(.rodata.str1.1), (51 bytes).
     Removing vl53l1x_api.o(.rodata.status_rtn), (24 bytes).
     Removing spatialscanner.o(.text), (0 bytes).
+    Removing spatialscanner.o(.text.PortN_Init), (62 bytes).
+    Removing spatialscanner.o(.ARM.exidx.text.PortN_Init), (8 bytes).
+    Removing spatialscanner.o(.text.PortF_Init), (62 bytes).
+    Removing spatialscanner.o(.ARM.exidx.text.PortF_Init), (8 bytes).
     Removing systick.o(.text), (0 bytes).
     Removing systick.o(.text.SysTick_Init), (42 bytes).
     Removing systick.o(.ARM.exidx.text.SysTick_Init), (8 bytes).
@@ -736,4 +742,4 @@ Removing Unused input sections from the image.
     Removing system_msp432e401y.o(.ARM.exidx.text.SystemCoreClockUpdate), (8 bytes).
     Removing system_msp432e401y.o(.ARM.exidx.text.SystemInit), (8 bytes).
 
-169 unused section(s) (total 9946 bytes) removed from the image.
+173 unused section(s) (total 10086 bytes) removed from the image.
