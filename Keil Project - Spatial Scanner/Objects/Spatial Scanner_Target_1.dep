@@ -20,7 +20,7 @@ I (VL53L1X_api.h)(0x67E2F654)
 I (vl53l1_platform.h)(0x67E2F654)
 I (vl53l1_types.h)(0x67E2F654)
 I (uart.h)(0x67E2F654)
-F (.\SpatialScanner.c)(0x68C21C1B)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__EVAL -gdwarf-4 -O0 -ffunction-sections -Wall -Wextra -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier-I./RTE/_Target_1-IC:/Users/haque/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/haque/AppData/Local/Arm/Packs/TexasInstruments/MSP432E4_DFP/3.2.6/Device/Include-D__UVISION_VERSION="541" -D_RTE_ -D__MSP432E401Y__-o ./objects/spatialscanner.o -MMD)
+F (.\SpatialScanner.c)(0x68C21DC4)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__EVAL -gdwarf-4 -O0 -ffunction-sections -Wall -Wextra -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier-I./RTE/_Target_1-IC:/Users/haque/AppData/Local/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-IC:/Users/haque/AppData/Local/Arm/Packs/TexasInstruments/MSP432E4_DFP/3.2.6/Device/Include-D__UVISION_VERSION="541" -D_RTE_ -D__MSP432E401Y__-o ./objects/spatialscanner.o -MMD)
 I (PLL.h)(0x67F73AA6)
 I (SysTick.h)(0x67EAD58E)
 I (uart.h)(0x67E2F654)

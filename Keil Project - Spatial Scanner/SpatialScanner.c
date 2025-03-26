@@ -13,9 +13,17 @@
 #include "VL53L1X_api.h"
 
 
+//GLOBAL CONSTANTS --------------------------------------------------------------------------------------------------------
+
+
+//GLOBAL VARIABLES -----------------------------------------------------------------------------------------------------------
+//initial states of status outputs
+uint32_t state0 = 0;
+
 //FUNCTION PROTOTYPES -------------------------------------------------------------------------------------------------------
 void PortN_Init(); //on board LEDs
 void PortF_Init(); //on board LEDs
+void PortJ_Init(); //on board push button
 
 void statusOutput0 (uint32_t state); //PN1 <-- measurement status
 void statusOutput1 (uint32_t state); //PN0
@@ -43,6 +51,19 @@ void PortF_Init(void){
 	GPIO_PORTF_DEN_R=0b00010011;															// Enable PF0-1 and PF4 as digital pins
 	return;
 }
+
+void PortJ_Init(void){
+	SYSCTL_RCGCGPIO_R |= SYSCTL_RCGCGPIO_R8;  // Activate clock for Port J
+	while((SYSCTL_PRGPIO_R & SYSCTL_PRGPIO_R8) == 0) {}; // Allow time for clock to stabilize
+	GPIO_PORTJ_DIR_R &= ~0x03;                 // Make PJ0 input 
+	GPIO_PORTJ_DEN_R |= 0x03;                  // Enable digital I/O on PJ0
+	GPIO_PORTJ_PCTL_R &= ~0x0000000F;          // Configure PJ0 as GPIO 
+	GPIO_PORTJ_AMSEL_R &= ~0x03;               // Disable analog functionality on PJ0        
+	GPIO_PORTJ_PUR_R |= 0x03;                  // Enable weak pull-up resistor on PJ0
+	return;
+}
+
+
 
 
 //FOR ALL STATUS OUTPUT FUNCTION CALLS 
@@ -100,11 +121,28 @@ int main(void) {
 
 	PortN_Init(); //on board LEDs
   PortF_Init(); //on board LEDs
+	PortJ_Init(); //on board push button
 	
-
-  while(1) {
-		clearAllStatusOutputs();
-		statusOutput1(1); // additional status start
-		statusOutput1(0); // additional status end
-	}
+	
+	//initally off
+		while (state0 == 0){
+			clearAllStatusOutputs();
+			//B0 - PJ0 - TOGGLE POWER
+			if ((GPIO_PORTJ_DATA_R &= 0b00000001) == 0){ //once B0 pressed, turn ON
+				state0 = 1;
+				SysTick_Wait10ms(25); //wait 0.25s
+			}
+		}
+		
+		//B0 - PJ0 - TOGGLE POWER
+		if ((GPIO_PORTJ_DATA_R &= 0b00000001) == 0){ //once PJ0 pressed, TOGGLE POWER
+			state0^=1;
+		}
+		
+		if (state0 == 1){
+			statusOutput1(1); // additional status start
+			
+			statusOutput1(0); // additional status end
+			state0 = 0;
+		}
 }
