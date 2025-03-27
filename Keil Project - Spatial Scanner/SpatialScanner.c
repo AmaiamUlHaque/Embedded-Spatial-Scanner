@@ -30,6 +30,15 @@
 const int32_t STEP = 4; //the increment of steps (out of 512) taken after each measurement
 
 
+// there are 4 steps taken per spin()
+// step of 4 --> 4*4 = 16 step increments --> data measured every 16 steps
+// 360* 16steps/2048steps = 2.8125* --> data measured every 2.8125 degrees
+// 2048/16 = 128 measurements taken per revolution
+
+// define in MATLAB code on line 38-39 --> mesurementsPreRev = 128 & stepAngle = 2.8125
+
+
+
 //GLOBAL VARIABLES -----------------------------------------------------------------------------------------------------------
 uint32_t currentPos = 0;	//current position in steps
 uint32_t direction = 1;		//direction toggle
@@ -305,6 +314,13 @@ void clearAllStatusOutputs(){
 	return;
 }
 
+
+
+
+
+
+	
+
 //updates currentPos based on stepsTaken
 void updateCurrPos(uint32_t stepsTaken){
 	currentPos = (currentPos + stepsTaken) % 2048; //mod operator for if currentPos goes over 2048 CW direction
@@ -433,6 +449,17 @@ int main(void) {
 
   while(1) {
 		
+//		//TO TEST BUS SPEED
+//		//square wave with 50% duty cycle and period of 1s
+//		GPIO_PORTF_DATA_R |= 0b00000010; 
+//		statusOutput3(1);
+//		SysTick_Wait10ms(50);
+//		GPIO_PORTF_DATA_R &= 0b11111101; 
+//		statusOutput3(0);
+//		SysTick_Wait10ms(50);
+		
+		
+		
   	//ACTUAL MAIN PROGRAM DOING THE SCANNING
 		//initally off
 		while (state0 == 0){
@@ -453,10 +480,6 @@ int main(void) {
 			statusOutput1(1); // additional status start
 			getData();
 			
-			//THIS IS NECESSARY FOR THE IN PERSON DEMO
-			//must scan three times with no disaplacement
-			//getData();
-			//getData();
 			
 			statusOutput1(0); // additional status end
 			state0 = 0;
