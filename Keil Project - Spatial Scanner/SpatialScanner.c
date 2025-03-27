@@ -1,6 +1,6 @@
-//Project 2 Deliverable
 //Amaiam Ul Haque
-//March 31, 2025 - April 1, 2025
+//March 31, 2025
+//Spatial Scanner - main file
 
 
 
@@ -326,6 +326,15 @@ void returnHome(){
 
 
 void ToF_Init(){
+		UART_printf("Program Begins\r\n");
+	int mynumber = 1;
+	sprintf(printf_buffer,"2DX ToF Program Studio Code %d\r\n",mynumber);
+	UART_printf(printf_buffer);
+ 
+/* Those basic I2C read functions can be used to check your own I2C functions */
+	status = VL53L1X_GetSensorId(dev, &wordData);
+	sprintf(printf_buffer,"(Model_ID, Module_Type)=0x%x\r\n",wordData);
+	UART_printf(printf_buffer);
  
 	// Booting ToF chip
 	while(sensorState==0){
@@ -335,6 +344,7 @@ void ToF_Init(){
 
 	FlashAllLEDs();
 
+	UART_printf("ToF Chip Booted!\r\n Please Wait...\r\n");
 	status = VL53L1X_ClearInterrupt(dev); /* clear interrupt has to be called to enable next interrupt*/
   /* This function must to be called to initialize the sensor with the default setting  */
 
@@ -379,6 +389,14 @@ void getData(){
 
 			statusOutput0(0); //end of measurement
 			
+			statusOutput2(1); //start of UART Tx
+			status = VL53L1X_ClearInterrupt(dev); //clear interrupt has to be called to enable next interrupt
+			sprintf(printf_buffer,"%u, %u, %u, %u, %u\r\n", RangeStatus, Distance, SignalRate, AmbientRate,SpadNum); //print the resulted readings to UART
+			UART_printf(printf_buffer);
+			SysTick_Wait10ms(5);
+			statusOutput2(0); //end of UART Tx
+			}
+			
 
 		//run stepper motor rotation outside of if statement
 		spinCW();
@@ -414,17 +432,6 @@ int main(void) {
 	
 
   while(1) {
-		
-//		//TO TEST BUS SPEED
-//		//square wave with 50% duty cycle and period of 1s
-//		GPIO_PORTF_DATA_R |= 0b00000010; 
-//		statusOutput3(1);
-//		SysTick_Wait10ms(50);
-//		GPIO_PORTF_DATA_R &= 0b11111101; 
-//		statusOutput3(0);
-//		SysTick_Wait10ms(50);
-		
-		
 		
   	//ACTUAL MAIN PROGRAM DOING THE SCANNING
 		//initally off
