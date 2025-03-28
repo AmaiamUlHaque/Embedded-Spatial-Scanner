@@ -15,8 +15,12 @@
 
 //GLOBAL CONSTANTS --------------------------------------------------------------------------------------------------------
 
+const int32_t STEP = 4; //the increment of steps (out of 512) taken after each measurement
+
 
 //GLOBAL VARIABLES -----------------------------------------------------------------------------------------------------------
+uint32_t currentPos = 0;	//current position in steps
+uint32_t direction = 1;		//direction toggle
 //initial states of status outputs
 uint32_t state0 = 0;
 
@@ -24,6 +28,16 @@ uint32_t state0 = 0;
 void PortN_Init(); //on board LEDs
 void PortF_Init(); //on board LEDs
 void PortJ_Init(); //on board push button
+void PortH_Init(); //stepper motor
+
+void spinCW();
+void spinCCW();
+void rotate(uint32_t steps, uint32_t dir);
+void toggleDirection();
+
+void updateCurrPos(uint32_t stepsTaken);
+void returnHome();
+
 
 void statusOutput0 (uint32_t state); //PN1 <-- measurement status
 void statusOutput1 (uint32_t state); //PN0
@@ -52,6 +66,19 @@ void PortF_Init(void){
 	return;
 }
 
+void PortH_Init(void){
+	//Use PortH pins (PH0-3) for output
+	SYSCTL_RCGCGPIO_R |= SYSCTL_RCGCGPIO_R7;						// activate clock for Port H
+	while((SYSCTL_PRGPIO_R&SYSCTL_PRGPIO_R7) == 0){};		// allow time for clock to stabilize --> two clock cycles (same as x2 NOP)
+	
+	GPIO_PORTH_DIR_R |= 0x0F;        										// configure Port H pins (PH0-3) as output
+  GPIO_PORTH_AFSEL_R &= ~0x0F;     										// disable alt funct on Port H pins (PH0-3)
+  GPIO_PORTH_DEN_R |= 0x0F;        										// enable digital I/O on Port H pins (PH0-3)
+																											// configure Port H as GPIO
+  GPIO_PORTH_AMSEL_R &= ~0x0F;     										// disable analog functionality on Port H pins (PH0-3)
+	return;
+}
+
 void PortJ_Init(void){
 	SYSCTL_RCGCGPIO_R |= SYSCTL_RCGCGPIO_R8;  // Activate clock for Port J
 	while((SYSCTL_PRGPIO_R & SYSCTL_PRGPIO_R8) == 0) {}; // Allow time for clock to stabilize
@@ -64,6 +91,89 @@ void PortJ_Init(void){
 }
 
 
+void spinCW(){
+	uint32_t delay = 1;
+	
+	GPIO_PORTH_DATA_R = 0b00000011;
+	SysTick_WaitMinimum(delay);
+	
+	GPIO_PORTH_DATA_R = 0b00000110; 
+	SysTick_WaitMinimum(delay);
+	
+	GPIO_PORTH_DATA_R = 0b00001100; 
+	SysTick_WaitMinimum(delay);
+	
+	GPIO_PORTH_DATA_R = 0b00001001; 
+	SysTick_WaitMinimum(delay);
+	
+	updateCurrPos(4);
+	return;
+}
+
+
+
+//motor spins CCW taking 4 steps at a time
+void spinCCW(){
+	uint32_t delay = 1;
+	
+	GPIO_PORTH_DATA_R = 0b00001001;
+	SysTick_WaitMinimum(delay);
+	
+	GPIO_PORTH_DATA_R = 0b00001100; 
+	SysTick_WaitMinimum(delay);
+	
+	GPIO_PORTH_DATA_R = 0b00000110; 
+	SysTick_WaitMinimum(delay);
+	
+	GPIO_PORTH_DATA_R = 0b00000011;
+	SysTick_WaitMinimum(delay);
+	
+	updateCurrPos(-4);
+	return;
+}
+
+
+
+//actual STEP = 4*steps
+//if dir == 1 --> CW
+//if dir == 0 --> CCw
+void rotate(uint32_t steps, uint32_t dir){ 
+	//updates currentPos automatically
+	if (dir == 1){
+		for (uint32_t i=0; i<steps; i++){
+			spinCW();
+		}
+		statusOutput3(1);
+		SysTick_Wait10ms(1);
+		statusOutput3(0);
+	}
+	else if(dir == 0){
+		for (uint32_t i=0; i<steps; i++){
+			spinCCW();
+		}
+		statusOutput3(1);
+		SysTick_Wait10ms(1);
+		statusOutput3(0);
+	}
+}
+
+void updateCurrPos(uint32_t stepsTaken){
+	currentPos = (currentPos + stepsTaken) % 2048; //mod operator for if currentPos goes over 2048 CW direction
+	
+	if (currentPos < 0){ //for if currentPos goes below 0 from CCW direction
+		currentPos += 2048;
+	}
+	return;
+}
+
+void returnHome(){
+	if (currentPos == 0) 
+		currentPos = 2047;
+	rotate((currentPos)/4, 0);
+	SysTick_Wait10ms(100);
+	//currentPos automatically reset back to 0 within spinCW and spinCCW functions
+	return;
+}
 
 
 //FOR ALL STATUS OUTPUT FUNCTION CALLS 
@@ -121,28 +231,19 @@ int main(void) {
 
 	PortN_Init(); //on board LEDs
   PortF_Init(); //on board LEDs
+	PortH_Init(); //stepper motor
 	PortJ_Init(); //on board push button
+	
 	
 	
 	//initally off
 		while (state0 == 0){
-			clearAllStatusOutputs();
-			//B0 - PJ0 - TOGGLE POWER
-			if ((GPIO_PORTJ_DATA_R &= 0b00000001) == 0){ //once B0 pressed, turn ON
-				state0 = 1;
-				SysTick_Wait10ms(25); //wait 0.25s
-			}
-		}
-		
-		//B0 - PJ0 - TOGGLE POWER
-		if ((GPIO_PORTJ_DATA_R &= 0b00000001) == 0){ //once PJ0 pressed, TOGGLE POWER
-			state0^=1;
-		}
-		
-		if (state0 == 1){
-			statusOutput1(1); // additional status start
+			for (int i = 0; i < 1024; i++)
+			spinCW();
+			for (int i = 0; i < 1024; i++)
+			spinCCW();
 			
-			statusOutput1(0); // additional status end
-			state0 = 0;
+			rotate(1024, 1);
+			toggleDirection();
 		}
 }
