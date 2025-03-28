@@ -27,8 +27,12 @@ uint32_t state0 = 0;
 //FUNCTION PROTOTYPES -------------------------------------------------------------------------------------------------------
 void PortN_Init(); //on board LEDs
 void PortF_Init(); //on board LEDs
-void PortJ_Init(); //on board push button
+void PortJ_Init(); //on board push buttons
 void PortH_Init(); //stepper motor
+
+void EnableInt();
+void DisableInt();
+void WaitForInt();
 
 void spinCW();
 void spinCCW();
@@ -91,6 +95,21 @@ void PortJ_Init(void){
 }
 
 
+void EnableInt(void) {
+    __asm("    cpsie   i\n");
+}
+ 
+// Disable interrupts
+void DisableInt(void) {
+    __asm("    cpsid   i\n");
+}
+ 
+// Low power wait
+void WaitForInt(void) {
+    __asm("    wfi\n");
+}
+
+
 void spinCW(){
 	uint32_t delay = 1;
 	
@@ -136,7 +155,7 @@ void spinCCW(){
 
 //actual STEP = 4*steps
 //if dir == 1 --> CW
-//if dir == 0 --> CCw
+//if dir == 0 --> CCW
 void rotate(uint32_t steps, uint32_t dir){ 
 	//updates currentPos automatically
 	if (dir == 1){
@@ -227,13 +246,18 @@ void clearAllStatusOutputs(){
 int main(void) {
  
 	//initialisations
+	PLL_Init();	
+	SysTick_Init();
 	onboardLEDs_Init();
 
 	PortN_Init(); //on board LEDs
   PortF_Init(); //on board LEDs
 	PortH_Init(); //stepper motor
-	PortJ_Init(); //on board push button
+	PortJ_Init(); //on board push buttons
 	
+	
+	
+		
 	
 	
 	//initally off
