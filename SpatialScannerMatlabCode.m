@@ -1,6 +1,6 @@
 % Amaiam Ul Haque
 % March 31, 2025
-% Spatial Scanner - 3D mapping file
+% Spatial Scanner
 
 
 clc;
