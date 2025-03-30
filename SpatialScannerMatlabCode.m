@@ -1,3 +1,8 @@
+% Amaiam Ul Haque
+% March 31, 2025
+% Spatial Scanner - 3D mapping file
+
+
 clc;
 clear vars;
 close all;
@@ -87,6 +92,7 @@ try
                       '-b', 'LineWidth', 1);
             end
             plot3(x_coords(end), y_coords(end), z_coords(end), 'ro', 'MarkerSize', 6);
+            drawnow;
             
             measurement_count = measurement_count + 1;
         end
@@ -101,11 +107,13 @@ try
               [y_coords(end), y_coords(1)], ...
               [z_coords(end), z_coords(1)], ...
               '-b', 'LineWidth', 1);
+        drawnow;
     end
     
 catch ME
     disp("Error occurred: " + ME.message);
 end
+
 
 % Cleanup
 fclose(f);
@@ -113,6 +121,7 @@ disp("File saved: tof.xyz");
 disp("Closing: " + s.Port);
 delete(s);
 clear s;
+
 
 % Final plot with all data
 figure;
