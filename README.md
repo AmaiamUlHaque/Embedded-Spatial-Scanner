@@ -632,4 +632,4 @@ style="width:3.57292in;height:7.79546in"/>
 
 ### PC Code (MATLAB)
 <img src="./media/image4.png"
-style="width:2.40698in;height:9in"/>
+style="width:3.07559in;height:11.5in"/>
