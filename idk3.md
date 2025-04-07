@@ -4,6 +4,10 @@ An embedded system that uses a time-of-flight sensor and a rotary mechanism to p
 
 ![System Overview](./media/image1.png)
 
+*Graphical reconstruction of 3D mapping of a hallway.*
+
+![3D Hallway Mapping](./media/image6.png)
+
 ## System Overview
 
 The device is an embedded spatial mapping system that uses a Time-of-Flight (ToF) sensor (VL53L1X) mounted on a stepper motor to perform 360° scans of its surroundings. It measures distances in the y-z plane at fixed angular intervals and combines these with manual displacements along the x-axis to generate 3D spatial data.
@@ -153,6 +157,18 @@ For 55th measurement of 3rd revolution with d=172mm:
 2. For additional scans, repeat the procedure
 
 ## Visualization System
+
+## Sample Results
+
+### Graphical Reconstruction of 3D Hallway Mapping
+![3D Hallway Mapping](./media/image6.png)
+
+This sample output demonstrates the system's capability to reconstruct 3D environments. The plot shows:
+- **X-axis**: Longitudinal displacement (forward movement direction)
+- **Y-axis**: Horizontal plane measurements (left-right)
+- **Z-axis**: Vertical plane measurements (up-down)
+
+The point cloud clearly captures the hallway structure with walls on both sides and open space in the center, demonstrating successful spatial mapping and coordinate transformation.
 
 ## Programming Flowcharts
 
